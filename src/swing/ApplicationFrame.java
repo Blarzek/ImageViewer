@@ -1,11 +1,10 @@
 package swing;
 
+import control.ActionListenerFactory;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.File;
@@ -17,8 +16,9 @@ import javax.swing.JPanel;
 
 public class ApplicationFrame extends JFrame {
 
-    private Image image;
+    private final Image image;
     private JPanel options;
+    private ActionListenerFactory factory;
 
     public ApplicationFrame() {
         image = readImage();
@@ -87,28 +87,14 @@ public class ApplicationFrame extends JFrame {
     }
     
     private Component createNextButton() {
-        JButton button = new JButton("Next");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //actionListener.actionPerformed(e);
-                //label.setText("Exchange");
-                //label.setVisible(true);
-            }
-        });
+        JButton button = new JButton("Next >");
+        button.addActionListener(factory.createActionListener("Next"));
         return button;
     }
     
     private Component createPrevButton() {
-        JButton button = new JButton("Previous");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //actionListener.actionPerformed(e);
-                //label.setText("Exchange");
-                //label.setVisible(true);
-            }
-        });
+        JButton button = new JButton("< Previous");
+        button.addActionListener(factory.createActionListener("Prev"));
         return button;
     }
 
