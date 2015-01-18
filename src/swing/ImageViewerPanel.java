@@ -9,15 +9,10 @@ import ui.ImageDialog;
 public class ImageViewerPanel extends JPanel implements ImageDialog {
 
     private Image image;
-    private final int offset;
 
     public void show(Image image) {
         this.image = image;
         repaint();
-    }
-
-    public ImageViewerPanel(int w, int h) {
-        this.offset = 0;
     }
 
     @Override
@@ -48,16 +43,6 @@ public class ImageViewerPanel extends JPanel implements ImageDialog {
             return;
         }
         super.paint(graphics);
-        graphics.drawImage(getBitmap(), offset, 0, null);
-        if (offset == 0) {
-            return;
-        }
-
-        if (offset < 0) {
-            graphics.drawImage(getBufferedImage((SwingBitmap) image.getNext().getBitmap()), image.getBitmap().getWidth() + offset, 0, null);
-        }
-        if (offset > 0) {
-            graphics.drawImage(getBufferedImage((SwingBitmap) image.getPrev().getBitmap()), offset - image.getBitmap().getWidth(), 0, null);
-        }
+        graphics.drawImage(getBitmap(), 0, 0, getWidth(), getHeight(), null);
     }
 }
