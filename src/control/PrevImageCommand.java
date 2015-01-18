@@ -20,5 +20,5 @@ public class PrevImageCommand implements Command {
     public void actionPerformed(ActionEvent ae) {
         execute();
     }
-    
+
 }

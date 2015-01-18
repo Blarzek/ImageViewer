@@ -16,17 +16,18 @@ import javax.swing.JPanel;
 
 public class ApplicationFrame extends JFrame {
 
-    private final Image image;
     private JPanel options;
-    private ActionListenerFactory factory;
+    private final ActionListenerFactory factory;
+    private ImageViewerPanel imageViewerPanel;
 
-    public ApplicationFrame() {
-        image = readImage();
+    public ApplicationFrame(ActionListenerFactory factory) {
+        this.factory = factory;
         addWidgets();
-        setVisible(true);
         setSize(500, 500);
+        setLocationRelativeTo(null);
         setTitle("Image Viewer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
     }
 
     private void addWidgets() {
@@ -37,15 +38,9 @@ public class ApplicationFrame extends JFrame {
     }
 
     private JPanel createImagePanel() {
-        return new JPanel() {
+        ImageViewerPanel panel = new ImageViewerPanel(getWidth(), getHeight()) {
             {
                 getContentPane().addComponentListener(createComponentListener());
-            }
-
-            @Override
-            public void paint(Graphics g) {
-                super.paint(g);
-                g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
             }
 
             private ComponentListener createComponentListener() {
@@ -67,35 +62,32 @@ public class ApplicationFrame extends JFrame {
                     @Override
                     public void componentHidden(ComponentEvent e) {
                     }
+
                 };
             }
-
         };
+        this.imageViewerPanel = panel;
+        return panel;
     }
 
-    private Image readImage() {
-        try {
-            return ImageIO.read(new File("C:\\Users\\Public\\Pictures\\Sample Pictures\\Tulips.jpg"));
-        } catch (IOException ex) {
-            return null;
-        }
-    }
-    
-    private JPanel createOptionsPanel(){
+    private JPanel createOptionsPanel() {
         options = new JPanel();
         return options;
     }
-    
+
     private Component createNextButton() {
         JButton button = new JButton("Next >");
         button.addActionListener(factory.createActionListener("Next"));
         return button;
     }
-    
+
     private Component createPrevButton() {
         JButton button = new JButton("< Previous");
         button.addActionListener(factory.createActionListener("Prev"));
         return button;
     }
 
+    public ImageViewerPanel getImageViewerPanel() {
+        return imageViewerPanel;
+    }
 }
